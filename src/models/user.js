@@ -7,6 +7,14 @@ module.exports = {
         const result = await connection('users').insert(userData);
         return result;
     },
+    async getByFirebaseId(firebase_id) {
+        const result = await connection('users')
+            .where({ firebase_id })
+            .select("*")
+            .first();
+
+        return result;
+    },
     async deleteById(user_id) {
         const result = await connection('users').where({ user_id }).delete();
         return result;

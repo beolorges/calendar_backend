@@ -21,9 +21,7 @@ module.exports = {
     async deleteById(req, res) {
         try {
             const { user_id } = req.params;
-            const user = await userModel.getById(user_id);
-
-            await Firebase.deleteUser(user.firebase_id);
+            await firebase.deleteUser();
             const response = userModel.deleteById(user_id);
             return res.status(200).json(response);
         }
