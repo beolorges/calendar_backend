@@ -1,11 +1,10 @@
-const userModel = require('../models/userModel');
+const userModel = require('../models/user');
 const firebase = require('../utils/firebase');
 
 module.exports = {
     async create(req, res) {
         try {
             const user = req.body;
-
             const uid = await firebase.createNewUser(user.email, user.password);
 
             delete user.password;
@@ -15,7 +14,7 @@ module.exports = {
             return res.status(200).json(response);
         }
         catch (error) {
-            return res.status(500).json({ message: error });
+            return res.status(500).json({ message: "Usuário não criado" });
         }
 
     },
