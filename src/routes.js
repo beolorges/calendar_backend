@@ -3,16 +3,23 @@ const routes = express.Router();
 
 const sessionController = require('./controllers/sessionController');
 const userController = require('./controllers/userController');
+const eventController = require('./controllers/eventController');
 
 const sessionValidator = require('./validators/sessionValidator');
 const userValidator = require('./validators/userValidator');
+const eventValidator = require('./validators/eventValidator');
 
 // ************************ SESSION ************************
 routes.post('/login', sessionValidator.signIn, sessionController.signIn);
 
 
 // ************************ USERS ************************
-routes.post('/users', userValidator.create, userController.create);
-routes.delete('/users/:user_id', userValidator.delete, userController.deleteById);
+routes.post('/user', userValidator.create, userController.create);
+routes.delete('/user/:user_id', userValidator.delete, userController.deleteById);
+
+// ************************ EVENTS ************************
+routes.post('/event', eventValidator.create, eventController.create);
+routes.post('/event/:user_id/:event_id', eventValidator.accept, eventController.acceptEvent);
+routes.get('/event/:user_id', eventValidator.getByUserId, eventController.getAllByUserId);
 
 module.exports = routes;

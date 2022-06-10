@@ -15,8 +15,26 @@ module.exports = {
 
         return result;
     },
+    async getUserIdByEmail(email) {
+        const result = await connection('users')
+            .where({ email })
+            .select("user_id")
+            .first();
+
+        return result?.user_id
+    },
+
     async deleteById(user_id) {
         const result = await connection('users').where({ user_id }).delete();
+        return result;
+    },
+    async getAllEvents(user_id) {
+        const result = await connection('events')
+            .innerJoin('event_user', 'events.event_id', 'event_user.event_id')
+            .innerJoin('users', 'users.user_id', 'events_user.user_id')
+            .where({ user_id })
+            .select("events.*");
+
         return result;
     }
 }
