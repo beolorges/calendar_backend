@@ -20,6 +20,7 @@ routes.delete('/user/:user_id', userValidator.delete, userController.deleteById)
 // ************************ EVENTS ************************
 routes.post('/event', eventValidator.create, eventController.create);
 routes.post('/event/:user_id/:event_id', eventValidator.accept, eventController.acceptEvent);
+routes.delete('/event/:user_id/:event_id', eventValidator.delete, eventController.delete);
 routes.get('/event/:user_id', eventValidator.getByUserId, eventController.getAllByUserId);
 
 module.exports = routes;

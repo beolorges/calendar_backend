@@ -26,4 +26,10 @@ module.exports = {
             user_id: Joi.string().required()
         })
     }),
+    delete: celebrate({
+        [Segments.PARAMS]: Joi.object().keys({
+            user_id: Joi.string().required(),
+            event_id: Joi.string().required(),
+        })
+    }),
 }

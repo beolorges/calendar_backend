@@ -11,5 +11,8 @@ module.exports = {
         const result = await connection('events').where({ user_id }).select('*');
         return result;
     },
-
+    async delete({ event_id, user_id }) {
+        const result = await connection('events').where({ event_id, user_id }).delete();
+        return result;
+    }
 }

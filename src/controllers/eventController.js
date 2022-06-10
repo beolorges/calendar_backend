@@ -42,7 +42,10 @@ module.exports = {
     async acceptEvent(req, res) {
         try {
             const { user_id, event_id } = req.params;
-            await eventUserProvisionalModel.delete({ event_id, user_id });
+            const del = await eventUserProvisionalModel.delete({ event_id, user_id });
+            if (!del)
+                return res.status(500).json({ message: "Evento não encontrado" });
+
             const response = await eventUserModel.create({ event_id, user_id });
 
             return res.status(200).json(response);
@@ -51,6 +54,17 @@ module.exports = {
             return res.status(500).json({ message: "Erro ao aceitar evento" });
         }
 
+    },
+
+    async delete(req, res) {
+        try {
+            const { user_id, event_id } = req.params;
+            const response = await eventModel.delete({ event_id, user_id });
+
+            return res.status(200).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao deletar evento" });
+        }
     }
 
 }
