@@ -14,6 +14,22 @@ module.exports = {
 
     }),
 
+    edit: celebrate({
+        [Segments.BODY]: Joi.object().keys({
+            user_id: Joi.string().required(),
+            name: Joi.string().optional(),
+            startTime: Joi.string().optional(),
+            endTime: Joi.string().optional(),
+            description: Joi.string().allow('').optional(),
+            location: Joi.string().allow('').optional(),
+            userEmails: Joi.array().items(Joi.string().allow('')).optional(),
+        }),
+        [Segments.PARAMS]: Joi.object().keys({
+            event_id: Joi.string().required(),
+        })
+
+    }),
+
     accept: celebrate({
         [Segments.PARAMS]: Joi.object().keys({
             user_id: Joi.string().required(),

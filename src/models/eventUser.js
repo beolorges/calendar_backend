@@ -16,5 +16,12 @@ module.exports = {
             .select('events.*');
 
         return result;
+    },
+    async getByEventId(event_id) {
+        const result = await connection('event_user')
+            .where({ event_id })
+            .select('user_id');
+
+        return result;
     }
 }
