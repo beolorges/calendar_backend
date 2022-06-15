@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 module.exports = {
     async authenticate(req, res, next) {
-        const authHeader = request.headers['authorization']
+        const authHeader = req.headers['authorization']
         const [scheme, token] = authHeader && authHeader.split(' ');
 
         try {
@@ -11,7 +11,7 @@ module.exports = {
 
             jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
                 if (err) throw new error('Token de autorização inválido');
-                request.session = data;
+                req.session = data;
                 next();
             });
 

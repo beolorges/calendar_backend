@@ -7,9 +7,9 @@ module.exports = {
     async create(req, res) {
         try {
             const event = req.body;
-            const response = await eventModel.create({ user_id: event.user_id, name: event.name, startTime: event.startTime, endTime: event.endTime, description: event.description, location: event.location });
+            const response = await eventModel.create({ user_id: event?.user_id, name: event?.name, startTime: event?.startTime, endTime: event?.endTime, description: event?.description, location: event?.location });
 
-            event.userEmails.map(async (email) => {
+            event?.userEmails?.map(async (email) => {
                 const user_id = await userModel.getUserIdByEmail(email);
                 if (user_id)
                     await eventUserProvisionalModel.create({ event_id: response.event_id, user_id: user_id });
@@ -18,9 +18,20 @@ module.exports = {
             return res.status(200).json(response);
         }
         catch (error) {
-            return res.status(500).json({ message: "Evento não criado" });
+            return res.status(500).json({ message: error.message });
         }
 
+    },
+
+    async getByEventId(req, res) {
+        try {
+            const { event_id } = req.params;
+            const response = await eventModel.getByEventId(event_id);
+            return res.status(200).json(response);
+        }
+        catch (error) {
+            return res.status(500).json({ message: "Evento não encontrados" });
+        }
     },
 
     async getAllByUserId(req, res) {

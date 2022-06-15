@@ -7,9 +7,9 @@ module.exports = {
             name: Joi.string().required(),
             startTime: Joi.string().required(),
             endTime: Joi.string().required(),
-            description: Joi.string(),
-            location: Joi.string(),
-            userEmails: Joi.array().items(Joi.string().email()),
+            description: Joi.string().allow('').optional(),
+            location: Joi.string().allow('').optional(),
+            userEmails: Joi.array().items(Joi.string().allow('')).optional(),
         })
 
     }),
@@ -24,6 +24,11 @@ module.exports = {
     getByUserId: celebrate({
         [Segments.PARAMS]: Joi.object().keys({
             user_id: Joi.string().required()
+        })
+    }),
+    getByEventId: celebrate({
+        [Segments.PARAMS]: Joi.object().keys({
+            event_id: Joi.string().required()
         })
     }),
     delete: celebrate({

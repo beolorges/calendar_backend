@@ -7,6 +7,10 @@ module.exports = {
         const result = await connection('events').insert(eventData);
         return { event_id: eventData.event_id };
     },
+    async getByEventId(event_id) {
+        const result = await connection('events').where({ event_id }).select('*').first();
+        return result;
+    },
     async getCreatedByUser(user_id) {
         const result = await connection('events').where({ user_id }).select('*');
         return result;
