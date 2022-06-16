@@ -27,7 +27,6 @@ module.exports = {
         try {
             const event = req.body;
             const event_id = req.params.event_id;
-            const response = await eventModel.edit({ name: event?.name, startTime: event?.startTime, endTime: event?.endTime, description: event?.description, location: event?.location }, event_id);
 
             event?.userEmails?.map(async (email) => {
                 const user_id = await userModel.getUserIdByEmail(email);
@@ -46,14 +45,13 @@ module.exports = {
                         isThisUserAlreadyGuest = true;
                 })
 
-                console.log({ user_id, isThisUserAlreadyGuest });
-
-
                 if (user_id && !isThisUserAlreadyGuest)
                     await eventUserProvisionalModel.create({ event_id: event_id, user_id: user_id });
             })
 
-            return res.status(200).json(response);
+            await eventModel.edit({ name: event?.name, startTime: event?.startTime, endTime: event?.endTime, description: event?.description, location: event?.location }, event_id);
+
+            return res.status(200).json({ message: 'Evento editado com sucesso' });
         }
         catch (error) {
             return res.status(500).json({ message: error.message });
@@ -110,6 +108,18 @@ module.exports = {
             const response = await eventModel.delete({ event_id, user_id });
 
             return res.status(200).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao deletar evento" });
+        }
+    },
+
+    async deleteEventUser(req, res) {
+        try {
+            const { user_id, event_id } = req.params;
+            await eventUserModel.delete({ event_id, user_id });
+            await eventUserProvisionalModel.delete({ event_id, user_id });
+
+            return res.status(200).json({ message: "Evento deletado" });
         } catch (error) {
             return res.status(500).json({ message: "Erro ao deletar evento" });
         }

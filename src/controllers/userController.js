@@ -1,5 +1,6 @@
 const userModel = require('../models/user');
 const firebase = require('../utils/firebase');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     async create(req, res) {
@@ -11,7 +12,9 @@ module.exports = {
             user.firebase_id = uid;
 
             const response = await userModel.create(user);
-            return res.status(200).json(response);
+            const accessToken = jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: '1d' });
+
+            return res.status(200).json({ user, accessToken });
         }
         catch (error) {
             return res.status(500).json({ message: "Usuário não criado" });

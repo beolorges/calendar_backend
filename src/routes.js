@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 
-const { authenticate, isAuthenticated } = require('./middlewares/authentication');
+const { authenticate, isAuthenticated, userFromSession } = require('./middlewares/authentication');
 
 const sessionController = require('./controllers/sessionController');
 const userController = require('./controllers/userController');
@@ -13,6 +13,7 @@ const eventValidator = require('./validators/eventValidator');
 
 // ************************ AUTHENTICATE ************************
 routes.get('/authenticate', isAuthenticated);
+routes.get('/auth/user', userFromSession);
 
 // ************************ SESSION ************************
 routes.post('/login', sessionValidator.signIn, sessionController.signIn);
@@ -29,5 +30,9 @@ routes.delete('/event/:user_id/:event_id', eventValidator.delete, authenticate, 
 routes.get('/event/:user_id', eventValidator.getByUserId, authenticate, eventController.getAllByUserId);
 routes.get('/eventid/:event_id', eventValidator.getByEventId, authenticate, eventController.getByEventId);
 routes.put('/event/edit/:event_id', eventValidator.edit, authenticate, eventController.edit);
+
+// ************************ EVENT USERS ************************
+routes.delete('/event/reject/:user_id/:event_id', eventValidator.delete, authenticate, eventController.deleteEventUser);
+
 
 module.exports = routes;

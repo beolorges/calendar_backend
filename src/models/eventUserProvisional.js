@@ -18,7 +18,6 @@ module.exports = {
         return result;
     },
     async getByEventId(event_id) {
-        console.log(event_id)
         const result = await connection('event_user_provisional')
             .where({ event_id })
             .select('user_id');
